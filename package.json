@@ -1,0 +1,17 @@
+{
+  "name": "dono_pocket",
+  "version": "1.0.0",
+  "description": "",
+  "main": "stream_socket.js",
+  "scripts": {
+    "start": "node stream_socket.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "node-ssh": "^11.1.1",
+    "socket.io-client": "^2.4.0"
+  }
+}
