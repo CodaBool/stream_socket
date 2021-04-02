@@ -7,17 +7,21 @@ const token = process.env.SOCKET_API_TOKEN
 const password = process.env.MOM_PASSWORD
 const cwd = '/home/codabool/scripts/alexa'
 
+//io.set('heartbeat timeout', Number.MAX_VALUE) // seconds
+//io.set('heartbeat interval', 5000)
 const streamlabs = io(`https://sockets.streamlabs.com?token=${token}`, {transports: ['websocket']})
+
 
 streamlabs.on('connect', () => console.log('connected!'))
 streamlabs.on("connect_error", err => console.log(err))
 
 streamlabs.on('event', e => {
+  console.log('event', e)
   let routine = ''
   let message = ''
   let newEvent = ''
   if (e.type === 'subscription') {
-    message = e.message[0].name + ' joined UwU gang'
+//    message = e.message[0].name + ' joined UwU gang'
     routine = 'donation'
   } else if (e.type === 'follow') {
     message = 'Welcome ' + e.message[0].name
@@ -89,20 +93,26 @@ streamlabs.on('event', e => {
     if (e.message[0].name === 'trashabag') {
       message = 'trasha and ' + e.message[0].raiders + ' pieces of trash joined the chat'
     }
+  } else if (e.type === 'alertPlaying') {
+    if (e.message.rawAmount > 5) {
+       console.log('amount =' e.message.rawAmount)
+    }
   } else { // some other event
-    console.log('strange event', e)
+    // console.log('strange event', e)
     newEvent = e.type
   }
 
   console.log(e.type, '|', routine, 'routine')
-  if (e.message[0].raiders) {
-    console.log(e.message[0].raiders, 'raiders')
-  }
-  if (e.message[0].viewers) {
-    console.log(e.message[0].viewers, 'viewers')
-  }
-  if (e.message[0].amount) {
-    console.log(e.message[0].amount, 'amount')
+  if (typeof e.message === 'array') {
+    if (e.message[0].raiders) {
+      console.log(e.message[0].raiders, 'raiders')
+    }
+    if (e.message[0].viewers) {
+      console.log(e.message[0].viewers, 'viewers')
+    }
+    if (e.message[0].amount) {
+      console.log(e.message[0].amount, 'amount')
+    }
   }
 
   if (routine) {
