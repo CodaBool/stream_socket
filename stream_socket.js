@@ -16,12 +16,7 @@ streamlabs.on('event', e => {
   let routine = ''
   let message = ''
   let newEvent = ''
-
-  // MOST RECENT UPDATE
-  // - Removed follow 
-  // - Removed host
-
-  console.log('event', e.type)
+//  console.log('event', e.type)
   if (e.type === 'subscription') {
     routine = 'special'
   } else if (e.type === 'resub') {
@@ -38,13 +33,28 @@ streamlabs.on('event', e => {
     if (e.message[0].raiders > 20) {
       routine = 'special'
     }
-    if (e.message[0].name === 'linusfrog') { // trashabag
-      routine = 'frog'
-    }
   } else if (e.type === 'alertPlaying') {
+
   } else { // some other event
-    // console.log('strange event', e)
     newEvent = e.type
+  }
+
+
+// === Logging ===
+  if (e.type === 'subscription') {
+    console.log('sub from', e.message)
+  }
+  if (e.type === 'resub') {
+    console.log('resub from', e.message)
+  }
+  if (e.type === 'donation') {
+    console.log('donation from', e.message)
+  }
+  if (e.type === 'bits') {
+    console.log('bits from', e.message)
+  }
+  if (e.type === 'raid') {
+    console.log('raid from', e.message)
   }
 
   // console.log(e.type, '|', routine, 'routine')
@@ -60,7 +70,7 @@ streamlabs.on('event', e => {
   //   }
   // }
 
-  if (routine.length > 0 && !newEvent && e.type !== 'alertPlaying' && e.type !== 'streamlabels' && e.type !== 'streamlabels.underlying') {
+  if (routine.length > 0 && !newEvent && e.type !== 'alertPlaying' && e.type !== 'streamlabels' && e.type !== 'streamlabels.underlying' && e.type !== 'subscription-playing') {
     ssh.connect({
       host: '192.168.1.25',
       username: 'codabool',
